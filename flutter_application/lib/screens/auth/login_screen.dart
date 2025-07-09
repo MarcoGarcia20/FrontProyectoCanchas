@@ -18,10 +18,7 @@ class LoginScreen extends StatelessWidget {
             const Center(
               child: Text(
                 'Alquiler de Canchas de Futbol',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 40),
@@ -59,10 +56,11 @@ class LoginScreen extends StatelessWidget {
                   backgroundColor: Colors.green.shade700,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 onPressed: () {
-                  // Aquí llamas al AuthService más adelante
+                  Navigator.pushNamed(context, '/home');
                 },
                 child: const Text(
                   'Ingresar',
@@ -74,7 +72,7 @@ class LoginScreen extends StatelessWidget {
             Center(
               child: TextButton(
                 onPressed: () {
-                  // Navegar a "Recuperar contraseña"
+                  Navigator.pushNamed(context, '/forgot');
                 },
                 child: const Text("¿Olvidaste tu contraseña?"),
               ),
@@ -82,7 +80,7 @@ class LoginScreen extends StatelessWidget {
             Center(
               child: TextButton(
                 onPressed: () {
-                  // Navegar a registro
+                  Navigator.pushNamed(context, '/register');
                 },
                 child: const Text("Regístrate aquí"),
               ),

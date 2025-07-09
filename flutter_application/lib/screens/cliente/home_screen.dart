@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.person_outline, size: 28),
                     onPressed: () {
-                      // Navegar al perfil
+                      Navigator.pushNamed(context, '/profile');
                     },
                   ),
                 ],
@@ -163,7 +163,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    // Acción de reservar cancha
+                    Navigator.pushNamed(context, '/reservation');
                   },
                   child: const Text(
                     'Reservar cancha',
@@ -183,7 +183,7 @@ class HomeScreen extends StatelessWidget {
         iconSize: 40,
         currentIndex: 0,
         onTap: (index) {
-          // Navegación entre pantallas
+          Navigator.pushNamed(context, index == 0 ? '/home' : index == 1 ? '/calendar' : '/profile');
         },
         items: const [
           BottomNavigationBarItem(
