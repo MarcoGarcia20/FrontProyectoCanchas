@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../core/constants.dart';   // Define colores y textos aquí
+import '../../core/constants.dart'; // Define colores y textos aquí
 import '../../widgets/feature_button.dart';
 import '../../widgets/card_horizontal.dart';
 
 class HomeScreen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Datos simulados para tarjetas, puedes traerlos de tu backend más adelante
+    // Datos simulados para tarjetas
     final habilidades = [
       {
         'titulo': 'Circuito KIA - Villa Morrá',
@@ -30,14 +30,8 @@ class HomeScreen2 extends StatelessWidget {
         'titulo': 'Villa Morra - Club de Padel',
         'imagen': 'assets/villa_morra.png',
       },
-      {
-        'titulo': 'Mburicao Parque Deportivo',
-        'imagen': 'assets/mburicao.png',
-      },
-      {
-        'titulo': 'Padel Center',
-        'imagen': 'assets/padel_center.png',
-      },
+      {'titulo': 'Mburicao Parque Deportivo', 'imagen': 'assets/mburicao.png'},
+      {'titulo': 'Padel Center', 'imagen': 'assets/padel_center.png'},
     ];
 
     return Scaffold(
@@ -56,7 +50,10 @@ class HomeScreen2 extends StatelessWidget {
                   Text('Cerca mío', style: TextStyle(color: kPrimarySwatch)),
                   Spacer(),
                   IconButton(
-                    icon: Icon(Icons.chat_bubble_outline, color: Colors.black87),
+                    icon: Icon(
+                      Icons.chat_bubble_outline,
+                      color: Colors.black87,
+                    ),
                     onPressed: () {},
                   ),
                   IconButton(
@@ -70,59 +67,68 @@ class HomeScreen2 extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage('assets/avatar_default.png'), // Cambia por la imagen del usuario
+                    backgroundImage: AssetImage('assets/avatar_default.png'),
                     radius: 25,
                   ),
                   const SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('¡Hola, Usuario!',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16)),
-                      Text('¿Qué hacemos hoy?',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 15)),
+                      Text(
+                        '¡Hola, Usuario!',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        '¿Qué hacemos hoy?',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15,
+                        ),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 20),
-              // Acciones principales
+              // Acciones principales (botones grandes)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   FeatureButton(
-                      iconAsset: 'assets/reserva.png', 
-                      label: 'Reserva una cancha', 
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('¡Botón de reservar presionado!'))
-                        );
-                      }),
+                    iconAsset: 'assets/reserva.png',
+                    label: 'Reserva una cancha',
+                    onTap: () {
+                      Navigator.pushNamed(context, '/reserva');
+                    },
+                  ),
                   FeatureButton(
-                      iconAsset: 'assets/partido.png',
-                      label: 'Encuentra un partido',
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('¡Botón de encontrar partido presionado!'))
-                        );
-                      }),
+                    iconAsset: 'assets/partido.png',
+                    label: 'Historial',
+                    onTap: () {
+                      Navigator.pushNamed(context, '/historial');
+                    },
+                  ),
                   FeatureButton(
-                      iconAsset: 'assets/torneo.png',
-                      label: 'Juega torneos',
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('¡Botón de jugar torneos presionado!'))
-                        );
-                      }),
+                    iconAsset: 'assets/torneo.png',
+                    label: 'Pagos',
+                    onTap: () {
+                      Navigator.pushNamed(context, '/pagos');
+                    },
+                  ),
                 ],
               ),
               const SizedBox(height: 24),
               // Carrusel de habilidades
-              Text('DEMUESTRA TUS HABILIDADES',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black87)),
+              Text(
+                'DEMUESTRA TUS HABILIDADES',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
               const SizedBox(height: 12),
               SizedBox(
                 height: 160,
@@ -139,9 +145,13 @@ class HomeScreen2 extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               // Carrusel de lugares
-              Text('DESCUBRE LUGARES ÚNICOS',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black87)),
+              Text(
+                'DESCUBRE LUGARES ÚNICOS',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
               const SizedBox(height: 12),
               SizedBox(
                 height: 120,
@@ -167,11 +177,26 @@ class HomeScreen2 extends StatelessWidget {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'INICIO'),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: 'RESERVAR'),
-          BottomNavigationBarItem(icon: Icon(Icons.emoji_events), label: 'RANKINGS'),
-          BottomNavigationBarItem(icon: Icon(Icons.groups_2), label: 'PARTIDOS'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'HISTORIAL',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.monetization_on),
+            label: 'PAGOS',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'PERFIL'),
         ],
-        // onTap: (index) { ... } // Implementa la navegación aquí
+        onTap: (index) {
+          final rutas = [
+            '/home',
+            '/reserva',
+            '/historial',
+            '/pagos',
+            '/perfil-cliente', // Cambia a '/perfil' si tienes una pantalla de perfil de cliente
+          ];
+          Navigator.pushNamed(context, rutas[index]);
+        },
       ),
     );
   }

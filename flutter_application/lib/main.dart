@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/screens/cliente/perfil_cliente_screen.dart';
+import 'package:flutter_application/screens/comunes/elegir_rol_screen.dart';
+import 'package:flutter_application/screens/propietario/agregar_cancha_screen.dart';
 import 'package:flutter_application/screens/propietario/dashboard_screen.dart';
 import 'package:flutter_application/screens/propietario/gestion_canchas_screen.dart';
 import 'package:flutter_application/screens/propietario/perfil_screen.dart';
@@ -17,7 +20,6 @@ import 'screens/cliente/pagos_screen.dart';
 import 'screens/cliente/comentarios_screen.dart';
 import 'screens/configuracion/configuracion_screen.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -28,11 +30,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+
       title: 'Alquiler de Canchas de Futbol',
       theme: appTheme, // Usa tu theme centralizado
-      initialRoute: '/splash',
+      initialRoute: '/elige-rol', // Cambia a la ruta inicial deseada
       routes: {
-        '/splash': (context) => const SplashScreen(),
+        '/elige-rol': (context) => const EligeRolScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/forgot': (context) => const ForgotPasswordScreen(),
@@ -45,13 +48,25 @@ class MyApp extends StatelessWidget {
         '/pagos': (context) => const PagosScreen(),
         '/comentarios': (context) => const ComentariosScreen(),
         '/configuracion': (context) => const ConfiguracionScreen(),
+        '/perfil-cliente': (context) => const PerfilClienteScreen(),
 
-        // Propietario (ejemplo de rutas)
+        // Propietario
         '/dashboard-prop': (context) => const DashboardPropietarioScreen(),
         '/gestion-canchas': (context) => const GestionCanchasScreen(),
+        '/agregar-cancha': (context) => const AgregarCanchaScreen(),
         '/perfil-prop': (context) => const PerfilPropietarioScreen(),
         '/reportes': (context) => const ReportesScreen(),
         '/reservas-prop': (context) => const ReservasPropietarioScreen(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/splash') {
+          final args = settings.arguments as String? ?? 'cliente';
+          return MaterialPageRoute(
+            builder: (context) => SplashScreen(rol: args),
+          );
+        }
+        // Si no es /splash, usa la ruta normal:
+        return null;
       },
     );
   }

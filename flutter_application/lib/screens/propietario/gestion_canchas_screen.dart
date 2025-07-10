@@ -32,7 +32,7 @@ class GestionCanchasScreen extends StatelessWidget {
         backgroundColor: kPrimarySwatch,
         child: const Icon(Icons.add),
         onPressed: () {
-          // Acción para agregar cancha
+          Navigator.pushNamed(context, '/agregar-cancha');
         },
       ),
       body: ListView.builder(

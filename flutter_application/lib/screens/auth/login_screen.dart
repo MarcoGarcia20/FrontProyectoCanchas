@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/screens/comunes/splash_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -7,6 +8,9 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
+
+    // Recibe el argumento (rol) de la navegación
+    final String rol = ModalRoute.of(context)?.settings.arguments as String? ?? 'cliente';
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 251, 249, 249),
@@ -60,7 +64,12 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/home');
+                  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => SplashScreen(rol: rol), // Usa la variable rol que recibiste
+    ),
+  );
                 },
                 child: const Text(
                   'Ingresar',
