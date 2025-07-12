@@ -1,38 +1,61 @@
 import 'package:flutter/material.dart';
-import '../../core/constants.dart'; // Define colores y textos aquí
+import '../../core/constants.dart';
 import '../../widgets/feature_button.dart';
 import '../../widgets/card_horizontal.dart';
 
-class HomeScreen2 extends StatelessWidget {
+class HomeScreen2 extends StatefulWidget {
+  @override
+  State<HomeScreen2> createState() => _HomeScreen2State();
+}
+
+class _HomeScreen2State extends State<HomeScreen2> {
+  // Simulación de canchas con distrito
+  final List<Map<String, String>> canchas = [
+    {
+      'titulo': 'Villa Morra - Club de Padel',
+      'imagen': 'assets/villa_morra.png',
+      'distrito': 'Villa Morra',
+    },
+    {
+      'titulo': 'Mburicao Parque Deportivo',
+      'imagen': 'assets/mburicao.png',
+      'distrito': 'Mburicao',
+    },
+    {
+      'titulo': 'Padel Center',
+      'imagen': 'assets/padel_center.png',
+      'distrito': 'Centro',
+    },
+    {
+      'titulo': 'Circuito KIA - Villa Morra',
+      'imagen': 'assets/circuito_kia.png',
+      'distrito': 'Villa Morra',
+    },
+    {
+      'titulo': 'Copa Blue',
+      'imagen': 'assets/copa_blue.png',
+      'distrito': 'Centro',
+    },
+    {
+      'titulo': 'Copa Juancho Padel',
+      'imagen': 'assets/copa_juancho.png',
+      'distrito': 'Mburicao',
+    },
+  ];
+
+  String? distritoSeleccionado;
+
+  List<String> getDistritos() {
+    final setDistritos = canchas.map((c) => c['distrito']!).toSet();
+    return setDistritos.toList();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Datos simulados para tarjetas
-    final habilidades = [
-      {
-        'titulo': 'Circuito KIA - Villa Morrá',
-        'imagen': 'assets/circuito_kia.png',
-        'descripcion': '15 al 24 de Noviembre\nVilla Morra - Club de Padel',
-      },
-      {
-        'titulo': 'Copa Blue',
-        'imagen': 'assets/copa_blue.png',
-        'descripcion': 'Categorías: Caballeros, Damas, Mixto',
-      },
-      {
-        'titulo': 'Copa Juancho Padel',
-        'imagen': 'assets/copa_juancho.png',
-        'descripcion': 'Categoría: Libre',
-      },
-    ];
-
-    final lugares = [
-      {
-        'titulo': 'Villa Morra - Club de Padel',
-        'imagen': 'assets/villa_morra.png',
-      },
-      {'titulo': 'Mburicao Parque Deportivo', 'imagen': 'assets/mburicao.png'},
-      {'titulo': 'Padel Center', 'imagen': 'assets/padel_center.png'},
-    ];
+    // Filtrar canchas por distrito si está seleccionado
+    final canchasFiltradas = distritoSeleccionado == null
+        ? canchas
+        : canchas.where((c) => c['distrito'] == distritoSeleccionado).toList();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -121,12 +144,48 @@ class HomeScreen2 extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 24),
-              // Carrusel de habilidades
+              // Filtro por distrito
+              Row(
+                children: [
+                  Text(
+                    'Filtrar por distrito:',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  ),
+                  const SizedBox(width: 10),
+                  DropdownButton<String>(
+                    value: distritoSeleccionado,
+                    hint: Text('Todos'),
+                    items: getDistritos()
+                        .map(
+                          (distrito) => DropdownMenuItem(
+                            value: distrito,
+                            child: Text(distrito),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        distritoSeleccionado = value;
+                      });
+                    },
+                  ),
+                  if (distritoSeleccionado != null)
+                    IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () => setState(() {
+                        distritoSeleccionado = null;
+                      }),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              // Carrusel de canchas cerca de ubicación (todas filtradas)
               Text(
-                'DEMUESTRA TUS HABILIDADES',
+                'Canchas cerca de tu ubicación',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
+                  fontSize: 17,
                 ),
               ),
               const SizedBox(height: 12),
@@ -134,22 +193,35 @@ class HomeScreen2 extends StatelessWidget {
                 height: 160,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
-                  itemCount: habilidades.length,
+                  itemCount: canchasFiltradas.length,
                   separatorBuilder: (_, __) => const SizedBox(width: 12),
-                  itemBuilder: (context, i) => CardHorizontal(
-                    title: habilidades[i]['titulo']!,
-                    image: habilidades[i]['imagen']!,
-                    description: habilidades[i]['descripcion']!,
-                  ),
+                  itemBuilder: (context, i) {
+                    final cancha = canchasFiltradas[i];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/cancha-detalle',
+                          arguments: cancha,
+                        );
+                      },
+                      child: CardHorizontal(
+                        title: cancha['titulo']!,
+                        image: cancha['imagen']!,
+                        description: cancha['distrito']!,
+                      ),
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 24),
-              // Carrusel de lugares
+              // Carrusel de todas las canchas
               Text(
-                'DESCUBRE LUGARES ÚNICOS',
+                'Todas las canchas disponibles',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
+                  fontSize: 17,
                 ),
               ),
               const SizedBox(height: 12),
@@ -157,12 +229,25 @@ class HomeScreen2 extends StatelessWidget {
                 height: 120,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
-                  itemCount: lugares.length,
+                  itemCount: canchas.length,
                   separatorBuilder: (_, __) => const SizedBox(width: 12),
-                  itemBuilder: (context, i) => CardHorizontal(
-                    title: lugares[i]['titulo']!,
-                    image: lugares[i]['imagen']!,
-                  ),
+                  itemBuilder: (context, i) {
+                    final cancha = canchas[i];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/cancha-detalle',
+                          arguments: cancha,
+                        );
+                      },
+                      child: CardHorizontal(
+                        title: cancha['titulo']!,
+                        image: cancha['imagen']!,
+                        description: cancha['distrito']!,
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
@@ -193,7 +278,7 @@ class HomeScreen2 extends StatelessWidget {
             '/reserva',
             '/historial',
             '/pagos',
-            '/perfil-cliente', // Cambia a '/perfil' si tienes una pantalla de perfil de cliente
+            '/perfil-cliente',
           ];
           Navigator.pushNamed(context, rutas[index]);
         },

@@ -2,23 +2,19 @@ import 'package:flutter/material.dart';
 import '../../core/constants.dart';
 
 class CanchaDetalleScreen extends StatelessWidget {
-  final String nombreCancha;
-  final String imagen;
-  final String ubicacion;
-  final double precio;
-  final String tipo;
-
-  const CanchaDetalleScreen({
-    Key? key,
-    this.nombreCancha = "Villa Morra - Club de Padel",
-    this.imagen = "assets/villa_morra.png",
-    this.ubicacion = "Av. Ejemplo 123, Ciudad",
-    this.precio = 150.0,
-    this.tipo = "Fútbol 5",
-  }) : super(key: key);
+  const CanchaDetalleScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Recibe los argumentos o usa valores por defecto
+    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+    final nombreCancha = args?['titulo'] ?? "Villa Morra - Club de Padel";
+    final imagen      = args?['imagen'] ?? "assets/villa_morra.png";
+    final ubicacion   = args?['ubicacion'] ?? args?['distrito'] ?? "Av. Ejemplo 123, Ciudad";
+    final precio      = args?['precio'] ?? "150.0";
+    final tipo        = args?['tipo'] ?? "Fútbol 5";
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -36,7 +32,19 @@ class CanchaDetalleScreen extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.asset(imagen, height: 180, width: double.infinity, fit: BoxFit.cover),
+              child: Image.asset(
+                imagen,
+                height: 180,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  height: 180,
+                  color: Colors.grey[300],
+                  child: Center(
+                    child: Icon(Icons.image_not_supported, color: Colors.red, size: 48),
+                  ),
+                ),
+              ),
             ),
             const SizedBox(height: 16),
             Text(
@@ -83,7 +91,18 @@ class CanchaDetalleScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                   onPressed: () {
-                    // Navegar a reservar cancha
+                    // Navegar a reserva_screen pasando datos de la cancha
+                    Navigator.pushNamed(
+                      context,
+                      '/reserva',
+                      arguments: {
+                        'titulo': nombreCancha,
+                        'imagen': imagen,
+                        'ubicacion': ubicacion,
+                        'precio': precio,
+                        'tipo': tipo,
+                      },
+                    );
                   },
                   icon: const Icon(Icons.calendar_month),
                   label: const Text("Reservar"),
@@ -95,6 +114,11 @@ class CanchaDetalleScreen extends StatelessWidget {
                   ),
                   onPressed: () {
                     // Navegar a comentarios pantalla
+                    Navigator.pushNamed(context, '/comentarios', arguments: {
+                      'titulo': nombreCancha,
+                      'imagen': imagen,
+                      'ubicacion': ubicacion,
+                    });
                   },
                   icon: Icon(Icons.comment, color: kPrimarySwatch),
                   label: Text("Comentarios", style: TextStyle(color: kPrimarySwatch)),
@@ -102,7 +126,7 @@ class CanchaDetalleScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            // Aquí puedes agregar una lista de horarios disponibles, servicios, etc.
+            // Aquí puedes agregar una lista de horarios disponibles, servicios adicionales, etc.
           ],
         ),
       ),
